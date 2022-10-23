@@ -3,6 +3,8 @@ import { voteAnecdote, createAnecdote } from './reducers/anecdoteReducer'
 
 const App = () => {
   const anecdotes = useSelector(state => state)
+  anecdotes.sort((a1, a2) => a2.votes - a1.votes)
+
   const dispatch = useDispatch()
 
   const vote = (id) => {
@@ -22,20 +24,21 @@ const App = () => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
-        <div key={anecdote.id}>
-          <div>
-            {anecdote.content}
+      {anecdotes
+        .map(anecdote =>
+          <div key={anecdote.id}>
+            <div>
+              {anecdote.content}
+            </div>
+            <div>
+              has {anecdote.votes}
+              <button onClick={() => vote(anecdote.id)}>vote</button>
+            </div>
           </div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
-          </div>
-        </div>
-      )}
+        )}
       <h2>create new</h2>
       <form onSubmit={addAnecdote}>
-        <div><input name='anecdote'/></div>
+        <div><input name='anecdote' /></div>
         <button type='submit'>create</button>
       </form>
     </div>
